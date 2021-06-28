@@ -111,10 +111,67 @@ async function question1() {
 
 }
 
-function d3PieChart(jsonData) {
+function d3PieChart() {
 
-  //var data = [2, 4, 8, 10];
-  var data = jsonData;
+  var data = [
+    {
+      "Volcano_Name": "Adatara",
+      "Longitude": 140.28
+    },
+    {
+      "Volcano_Name": "Akan",
+      "Longitude": 144.02
+    },
+    {
+      "Volcano_Name": "Akita-Komaga-take",
+      "Longitude": 140.8
+    },
+    {
+      "Volcano_Name": "Akita-Yake-yama",
+      "Longitude": 140.77
+    },
+    {
+      "Volcano_Name": "Asama",
+      "Longitude": 138.53
+    },
+    {
+      "Volcano_Name": "Aso",
+      "Longitude": 131.1
+    },
+    {
+      "Volcano_Name": "Azuma",
+      "Longitude": 140.25
+    },
+    {
+      "Volcano_Name": "Bayonnaise Rocks",
+      "Longitude": 139.92
+    },
+    {
+      "Volcano_Name": "Chokai",
+      "Longitude": 140.03
+    },
+    {
+      "Volcano_Name": "Fukujin",
+      "Longitude": 143.442
+    },
+    {
+      "Volcano_Name": "Fukutoku-okanoba",
+      "Longitude": 141.52
+    },
+    {
+      "Volcano_Name": "Iwo-Tori-shima",
+      "Longitude": 128.25
+    },
+    {
+      "Volcano_Name": "Iwo-jima",
+      "Longitude": 141.33
+    },
+    {
+      "Volcano_Name": "Izu-Tobu",
+      "Longitude": 139.12
+    }
+  ];
+  //var data = jsonData;
         
   var svg = d3.select("svg"),
             width = svg.attr("width"),
@@ -127,7 +184,7 @@ function d3PieChart(jsonData) {
   var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c','#F08080']);
 
   var pie = d3.pie().value(function(d) { 
-          return d.percentage; 
+          return d.Longitude; 
       });
 
   var path = d3.arc()
@@ -149,7 +206,7 @@ function d3PieChart(jsonData) {
 
       arc.append("path")
           .attr("d", path)
-          .attr("fill", function(d) { return color(d.data.percentage); });
+          .attr("fill", function(d) { return color(d.data.Longitude); });
   
       console.log(arc)
 
@@ -167,7 +224,7 @@ function d3PieChart(jsonData) {
         }).attr("dy", ".35em")
         .style("text-anchor", "middle")
         .style("opacity", 1)
-        .text(function(d) { return d.data.percentage; });
+        .text(function(d) { return d.data.Longitude; });
   
       // arc.append("text")
       //     .attr("transform", function(d) { 
@@ -191,30 +248,32 @@ async function question2() {
 
   var cName = $('#countryName').val();
 
-  let response = await fetch('/question2API', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({cName: cName})
-    });
-  let responseJSON = await response.json();
+  d3PieChart();
+
+  // let response = await fetch('/question2API', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({cName: cName})
+  //   });
+  // let responseJSON = await response.json();
   
-  if(response.status=200)
-  {
-      //alert("Query Complete! Click Ok to see the result.");
-      if(responseJSON.length === 0) {
-          alert('No Data!');
-      }
-      else {
-        d3ScatterPlot(responseJSON);
-      }
-  }
-  else
-  {
-      alert("Something went wrong")
-  }
+  // if(response.status=200)
+  // {
+  //     //alert("Query Complete! Click Ok to see the result.");
+  //     if(responseJSON.length === 0) {
+  //         alert('No Data!');
+  //     }
+  //     else {
+  //       d3ScatterPlot(responseJSON);
+  //     }
+  // }
+  // else
+  // {
+  //     alert("Something went wrong")
+  // }
 }
 
 /////////////////////////////QUESTION 2//////////////////////////////
