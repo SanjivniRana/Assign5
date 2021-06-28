@@ -238,7 +238,7 @@ function d3PieChart() {
       svg.append("g")
           .attr("transform", "translate(" + (width / 2 - 200) + "," + 40 + ")")
           .append("text")
-          .text("Browser use statistics - Jan 2017")
+          .text("PIE CHART")
           .attr("class", "title")
           .attr("font-size" , "30px")
 
@@ -313,6 +313,7 @@ async function question2() {
 function d3ScatterPlot(jsonData)     
  {    
     var data = jsonData;
+    console.log(data);
 
     // set the dimensions and margins of the graph
     var margin = {top: 80, right: 60, bottom: 60, left: 120},
@@ -345,7 +346,7 @@ function d3ScatterPlot(jsonData)
 
     // Add Y axis
     var y = d3.scaleLinear()
-    .domain(d3.extent(data, function(d) { return d.Latitude; }))
+    .domain(d3.extent(data, function(d) { return d.Longitude; }))
     .range([ height, 0]);
     svg.append("g")
     .call(d3.axisLeft(y));
@@ -390,7 +391,7 @@ function d3ScatterPlot(jsonData)
     .enter()
     .append("circle")
       .attr("cx", function (d) { return x(d.Volcano_Name); } )
-      .attr("cy", function (d) { return y(d.Latitude); } )
+      .attr("cy", function (d) { return y(d.Longitude); } )
       .attr("r", 5)
       .style("fill", "#800080")
 

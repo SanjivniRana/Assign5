@@ -113,7 +113,7 @@ application.post('/question3API', async (request, response) => {
     //let query = "SELECT TOP 20 [year], candidate FROM [dbo].[presidentialelect] WHERE [year] BETWEEN " +year1+ " AND " +year2+ " AND state_po = '" +state+ "' AND candidate IS NOT NULL AND [year] IS NOT NULL ORDER BY [year] FOR JSON PATH";
     console.log("Q3 query --> " +query);
     execSQLQuery(query).then(success => {
-        response.send(JSON.parse(success))
+        response.send(success)
     }).catch(err => { console.log("Error", err)})
 });
 
