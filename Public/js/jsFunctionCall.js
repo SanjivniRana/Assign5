@@ -40,35 +40,75 @@ async function countColumn() {
 
 ////////////////////////.////QUESTION 1/////////////////////////////
 
+// async function question1() {
+
+//   var year = $('#q1Year').val();
+//   var state = $('#q1State').val();
+
+//   let response = await fetch('/question1API', {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({year: year, state: state})
+//     });
+//   let responseJSON = await response.json();
+  
+//   if(response.status=200)
+//   {
+//       //alert("Query Complete! Click Ok to see the result.");
+//       if(responseJSON.length === 0) {
+//           alert('No Data!');
+//       }
+//       else {
+//          d3PieChart(responseJSON);
+//       }
+//   }
+//   else
+//   {
+//       alert("Something went wrong")
+//   }
+// }
+
 async function question1() {
 
-  var year = $('#q1Year').val();
-  var state = $('#q1State').val();
+  //var latR1 = $('#latRange1').val();
+  //var latR2 = $('#latRange2').val();
 
-  let response = await fetch('/question1API', {
+  let range1 = $('#latRange1').val();
+  let range2 = $('#latRange2').val();
+
+  // let query = "SELECT top 6 COUNT(totalvotes) AS Count, party_detailed AS party FROM presidentialelect GROUP BY party_detailed FOR JSON PATH";
+  let query;
+  let callResp, respdata;
+  let dic = {}
+  let r1 = parseInt(range1);
+  let r2 = parseInt(range2);
+
+  for (let i = r1; i < r2; i = i + 10) {
+    query = "SELECT sum(Number) AS sum FROM volcanosxr where Latitude between " + i + " and  " + (i + 10) + " FOR JSON PATH";
+
+
+    callResp = await fetch('/question1API', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({year: year, state: state})
+      body: JSON.stringify({ query: query })
     });
-  let responseJSON = await response.json();
-  
-  if(response.status=200)
-  {
-      //alert("Query Complete! Click Ok to see the result.");
-      if(responseJSON.length === 0) {
-          alert('No Data!');
-      }
-      else {
-         d3PieChart(responseJSON);
-      }
+    const data = await callResp.json();
+
+    data.forEach(j => {
+      dic[i + " to " + (i + 10)] = j.sum;
+    });
   }
-  else
-  {
-      alert("Something went wrong")
-  }
+
+  console.log("dic:  --> ",dic)
+
+  await horizontalBarChart(dic);
+
 }
 
 function d3PieChart(jsonData) {
@@ -147,13 +187,9 @@ function d3PieChart(jsonData) {
 
 }
 
-/////////////////////////////QUESTION 2//////////////////////////////
-
 async function question2() {
 
-  var year1 = $('#yearR1').val();
-  var year2 = $('#yearR2').val();
-  var state = $('#q2State').val();
+  var cName = $('#countryName').val();
 
   let response = await fetch('/question2API', {
       method: 'POST',
@@ -161,7 +197,7 @@ async function question2() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({year1: year1, year2: year2, state: state})
+      body: JSON.stringify({cName: cName})
     });
   let responseJSON = await response.json();
   
@@ -180,6 +216,40 @@ async function question2() {
       alert("Something went wrong")
   }
 }
+
+/////////////////////////////QUESTION 2//////////////////////////////
+
+// async function question2() {
+
+//   var year1 = $('#yearR1').val();
+//   var year2 = $('#yearR2').val();
+//   var state = $('#q2State').val();
+
+//   let response = await fetch('/question2API', {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({year1: year1, year2: year2, state: state})
+//     });
+//   let responseJSON = await response.json();
+  
+//   if(response.status=200)
+//   {
+//       //alert("Query Complete! Click Ok to see the result.");
+//       if(responseJSON.length === 0) {
+//           alert('No Data!');
+//       }
+//       else {
+//         d3ScatterPlot(responseJSON);
+//       }
+//   }
+//   else
+//   {
+//       alert("Something went wrong")
+//   }
+// }
 
 function d3ScatterPlot(jsonData)     
  {    
@@ -396,19 +466,19 @@ function verticalBarChart(jsonData) {
 
 //HORIZONTAL BARCHART WORKING WELL
 
-function horizontalBarChart(data1) {
+function horizontalBarChart(data) {
 
-  var dict = {};
+  // var dict = {};
   var colors = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-  data1.forEach(i => {
-    dict[i.candidate] = i.year;
-  });
+  // data1.forEach(i => {
+  //   dict[i.candidate] = i.year;
+  // });
 
-  console.log(dict)
+  //console.log(dict)
 
-  let data = dict;
+  //let data = dict;
 
   let margin = { top: 80, right: 80, bottom: 80, left: 252 };
   let svgWidth = 800, svgHeight = 600;
@@ -452,7 +522,7 @@ function horizontalBarChart(data1) {
     .attr("text-anchor", "end")
     .attr("fill", "black")
     .attr("font-size", "20px")
-    .text("Year");
+    .text("Sum of Volcano");
 
   svg.append("g")
     .call(d3.axisLeft(y))
@@ -464,7 +534,7 @@ function horizontalBarChart(data1) {
     .attr("text-anchor", "end")
     .attr("fill", "black")
     .attr("font-size", "20px")
-    .text("Candidate");
+    .text("Latitute");
 
   // Create rectangles
   let bars = svg.selectAll('.bar')
@@ -485,7 +555,7 @@ function horizontalBarChart(data1) {
       return data[d];
     })
     .attr("x", function (d) {
-      return x(data[d]) + 20;
+      return x(data[d]) + 30;
     })
     .attr("y", function (d) {
       console.log(d);

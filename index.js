@@ -56,26 +56,46 @@ application.post('/countColumnsQAPI', async (request, response) => {
 
 ////////////////////////////////////////////////////////////////////
 
+// application.post('/question1API', async (request, response) => {
+//     let year = request.body.year;
+//     let state = request.body.state;
+//     let query = "SELECT TOP 6 candidate, candidatevotes * 100.0/ totalvotes 'percentage' FROM [dbo].[presidentialelect] WHERE year = " +year+ " AND state_po = '" +state+ "' ORDER BY candidatevotes DESC FOR JSON PATH";
+//     console.log("Q1 query --> " +query);
+//     execSQLQuery(query).then(success => {
+//         response.send(JSON.parse(success))
+//     }).catch(err => { console.log("Error", err)})
+// });
+
 application.post('/question1API', async (request, response) => {
-    let year = request.body.year;
-    let state = request.body.state;
-    let query = "SELECT TOP 6 candidate, candidatevotes * 100.0/ totalvotes 'percentage' FROM [dbo].[presidentialelect] WHERE year = " +year+ " AND state_po = '" +state+ "' ORDER BY candidatevotes DESC FOR JSON PATH";
+    //let latR1 = request.body.latR1;
+    let query = request.body.query;
+    //let query = "SELECT TOP 6 candidate, candidatevotes * 100.0/ totalvotes 'percentage' FROM [dbo].[presidentialelect] WHERE year = " +year+ " AND state_po = '" +state+ "' ORDER BY candidatevotes DESC FOR JSON PATH";
     console.log("Q1 query --> " +query);
     execSQLQuery(query).then(success => {
         response.send(JSON.parse(success))
     }).catch(err => { console.log("Error", err)})
 });
 
+// application.post('/question2API', async (request, response) => {
+//     let year1 = request.body.year1;
+//     let year2 = request.body.year2;
+//     let state = request.body.state;
+//     let query = "SELECT year, sum(totalvotes) AS yearTotalVotes FROM [dbo].[presidentialelect] WHERE year BETWEEN " +year1+ " AND " +year2+ " AND state_po = '" +state+ "' GROUP BY year ORDER BY year ASC FOR JSON PATH";
+//     console.log("Q2 query --> " +query);
+//     execSQLQuery(query).then(success => {
+//         response.send(JSON.parse(success))
+//     }).catch(err => { console.log("Error", err)})
+// });
+
 application.post('/question2API', async (request, response) => {
-    let year1 = request.body.year1;
-    let year2 = request.body.year2;
-    let state = request.body.state;
+    let country = request.body.cName;
     let query = "SELECT year, sum(totalvotes) AS yearTotalVotes FROM [dbo].[presidentialelect] WHERE year BETWEEN " +year1+ " AND " +year2+ " AND state_po = '" +state+ "' GROUP BY year ORDER BY year ASC FOR JSON PATH";
     console.log("Q2 query --> " +query);
     execSQLQuery(query).then(success => {
         response.send(JSON.parse(success))
     }).catch(err => { console.log("Error", err)})
 });
+
 
 application.post('/question3API', async (request, response) => {
     let year1 = request.body.year1;

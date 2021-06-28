@@ -86,14 +86,27 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                    <h2>Question 1</h2>
+                    <!-- <h2>Question 1</h2> -->
                     </br>
-                    <div class="Q1div">
+                    <!-- <div class="Q1div">
                         <label>Please provide the Year:</label></br>
                         <input type="text" class="form-control" id="q1Year">
                         </br>
                         <label>Please provide the State:</label></br>
                         <input type="text" class="form-control" id="q1State">
+                        </br>
+                        <button class="btn btn-success executebtn" onclick="question1()">Result</button>
+                        <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
+                    </div> -->
+
+                    <h2>Question 5</h2>
+
+                    <div class="Q1div">
+                        <label>Latitude Range 1:</label></br>
+                        <input type="text" class="form-control" id="latRange1">
+                        </br>
+                        <label>Latitude Range 2:</label></br>
+                        <input type="text" class="form-control" id="latRange2">
                         </br>
                         <button class="btn btn-success executebtn" onclick="question1()">Result</button>
                         <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
@@ -111,7 +124,9 @@ ID: 1001820277 -->
                         <h4>Result:</h4>
                         </br>
 
-                        <svg width="1200" height="1000"> </svg>
+                        <!-- <svg width="1200" height="1000"> </svg> -->
+                        <div id="horizontalBarChart"></div>
+
                     </div>
             </div>
         </div>
