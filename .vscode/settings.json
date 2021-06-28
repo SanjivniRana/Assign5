@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a43cf0e2-36b9-4084-b899-86b1f7b4507e/resourceGroups/BTS/providers/Microsoft.Web/sites/assign2-sxr",
+    "appService.deploySubpath": "."
+}

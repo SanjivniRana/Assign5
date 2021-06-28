@@ -1,0 +1,125 @@
+<!-- Course : CSE 6331
+Name : Sanjivni Rana
+ID: 1001820277 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+        <style>
+            body {
+            font-family: "Lato", sans-serif;
+            }
+
+            .main {
+            margin-left: 250px; /* Same as the width of the sidenav */
+            padding: 20px;
+            }
+
+            .tableRow {
+            padding: 20px;
+            }
+
+            .sidenav {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgb(0, 0, 0);
+            overflow-x: hidden;
+            transition: 0.5s;   
+            padding-top: 60px;
+            }
+
+            .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+            }
+
+            .sidenav a:hover {
+            color: #f1f1f1;
+            }
+
+            @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+            }
+
+            ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: rgb(0, 0, 0);
+            top: 0;
+            width: 100%;
+            height: 60px;
+            }
+
+            li {
+            color: #f1f1f1;
+            text-align: center;
+
+            }
+
+            li a {
+            text-align: center;
+            }
+
+            .executebtn {
+                margin-top: 10px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div id="nav-placeholder"></div>
+        <div class="main">
+            <div class="container">
+                </br>
+                    <h2>Question 1</h2>
+                    </br>
+                    <div class="Q1div">
+                        <label>Please provide the Year:</label></br>
+                        <input type="text" class="form-control" id="q1Year">
+                        </br>
+                        <label>Please provide the State:</label></br>
+                        <input type="text" class="form-control" id="q1State">
+                        </br>
+                        <button class="btn btn-success executebtn" onclick="question1()">Result</button>
+                    </div>
+
+                    <!-- <button class="accordion">COUNT A COLUMN</button>
+                    <div class="panel">
+                        <label>SELECT</label><input type="text" class="form-control" name="queryInput" id="fetchData" placeholder="Query"><label>FROM</label><input type="text" class="form-control" value="all_month" disabled><label>GROUP BY</label><input type="text" class="form-control" name="queryInput" id="columnName" placeholder="Column Name">
+                        <button class="btn btn-success executebtn" onclick="countColumn()">Execute</button>
+                    </div> -->
+
+                    </br>
+                    </br>
+                    <div class="d3js">
+                        <h4>Result:</h4>
+                        </br>
+
+                        <svg width="1200" height="1000"> </svg>
+                    </div>
+            </div>
+        </div>
+
+        <script src="js/jsFunctionCall.js"></script>
+        <script>
+            $(function(){
+              $("#nav-placeholder").load("nav.html");
+            });
+        </script>
+    </body>
+</html>

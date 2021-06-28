@@ -1,0 +1,32 @@
+{
+  "name": "assign2_sxr",
+  "version": "1.0.0",
+  "description": "ADB Assignment 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Sanjivni Rana",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/storage-blob": "^12.5.0",
+    "@types/dotenv": "^8.2.0",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^5.0.1",
+    "config": "^3.3.6",
+    "csv-parser": "^3.0.0",
+    "csvtojson": "^2.0.10",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "fs": "0.0.1-security",
+    "mongodb": "^3.6.9",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7",
+    "redis": "^3.1.2",
+    "tedious": "^11.0.9"
+  }
+}
