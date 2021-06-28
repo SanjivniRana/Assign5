@@ -339,6 +339,40 @@ function d3ScatterPlot(jsonData)
 
 /////////////////////////////QUESTION 3//////////////////////////////
 
+// async function question3() {
+
+//   var year1 = $('#year1').val();
+//   var year2 = $('#year2').val();
+//   var state = $('#q3State').val();
+
+//   let response = await fetch('/question3API', {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({year1: year1, year2: year2, state: state})
+//     });
+//   let responseJSON = await response.json();
+  
+//   if(response.status=200)
+//   {
+//       //alert("Query Complete! Click Ok to see the result.");
+//       if(responseJSON.length === 0) {
+//           alert('No Data!');
+//       }
+//       else {
+//         //d3barchart(responseJSON);
+//         verticalBarChart(responseJSON);
+//         //horizontalBarChart(responseJSON);
+//       }
+//   }
+//   else
+//   {
+//       alert("Something went wrong")
+//   }
+// }
+
 async function question3() {
 
   var year1 = $('#year1').val();
