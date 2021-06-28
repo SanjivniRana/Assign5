@@ -38,7 +38,7 @@ async function countColumn() {
   //document.getElementById('selectColCondition').value = "";
 }
 
-//////////////////////////////////////////////////////
+////////////////////////.////QUESTION 1/////////////////////////////
 
 async function question1() {
 
@@ -57,7 +57,7 @@ async function question1() {
   
   if(response.status=200)
   {
-      alert("Query Complete! Click Ok to see the result.");
+      //alert("Query Complete! Click Ok to see the result.");
       if(responseJSON.length === 0) {
           alert('No Data!');
       }
@@ -147,7 +147,7 @@ function d3PieChart(jsonData) {
 
 }
 
-///////////////////////////////////////////////////////////////
+/////////////////////////////QUESTION 2//////////////////////////////
 
 async function question2() {
 
@@ -167,7 +167,7 @@ async function question2() {
   
   if(response.status=200)
   {
-      alert("Query Complete! Click Ok to see the result.");
+      //alert("Query Complete! Click Ok to see the result.");
       if(responseJSON.length === 0) {
           alert('No Data!');
       }
@@ -185,101 +185,89 @@ function d3ScatterPlot(jsonData)
  {    
     var data = jsonData;
 
-  //   var data = [
-  //     {
-  //         "yearTotalVotes": 615,
-  //         "year": "DEM"
-  //     },
-  //     {
-  //         "yearTotalVotes": 535,
-  //         "year": "LIB"
-  //     },
-  //     {
-  //         "yearTotalVotes": 613,
-  //         "year": "REP"
-  //     },
-  //     {
-  //         "yearTotalVotes": 2524,
-  //         "year": "OTHER"
-  //     }
-  // ];
-     
     // set the dimensions and margins of the graph
-var margin = {top: 10, right: 60, bottom: 60, left: 120},
-width = 1000 - margin.left - margin.right,
-height = 1000 - margin.top - margin.bottom;
+    var margin = {top: 80, right: 60, bottom: 60, left: 120},
+    width = 1000 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-.append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform",
-      "translate(" + margin.left + "," + margin.top + ")");
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
 
-// Add X axis
-var x = d3.scaleLinear()
-.domain(d3.extent(data, function(d) { return d.year; }))
-.range([ 0, width ]);
-svg.append("g")
-.attr("transform", "translate(0," + height + ")")
-.call(d3.axisBottom(x));
+    svg.append("text")
+    .attr("transform", "translate(100,0)")
+    .attr("x", 200)
+    .attr("y", -60)
+    .attr("font-size", "25px")
+    .text("SCATTER PLOT")
 
-// Add Y axis
-var y = d3.scaleLinear()
-.domain(d3.extent(data, function(d) { return d.yearTotalVotes; }))
-.range([ height, 0]);
-svg.append("g")
-.call(d3.axisLeft(y));
+    // Add X axis
+    var x = d3.scaleLinear()
+    .domain(d3.extent(data, function(d) { return d.year; }))
+    .range([ 0, width ]);
+    svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
 
-//Add lines
-var valueline = d3.line()
-     .x(function (d) {
-          return x(d.year);
-     })
-     .y(function (d) {
-          return y(d.yearTotalVotes);
-     });
+    // Add Y axis
+    var y = d3.scaleLinear()
+    .domain(d3.extent(data, function(d) { return d.yearTotalVotes; }))
+    .range([ height, 0]);
+    svg.append("g")
+    .call(d3.axisLeft(y));
 
-svg.append("path")
-     .data([data])
-     .attr("class", "line")
-     .attr("d", valueline)
-     //styling:
-     .attr("stroke", "#32CD32")
-     .attr("stroke-width", 2)
-     .attr("fill", "#FFFFFF");
+    //Add lines
+    var valueline = d3.line()
+        .x(function (d) {
+              return x(d.year);
+        })
+        .y(function (d) {
+              return y(d.yearTotalVotes);
+        });
 
-// Add the text label for the x axis
-svg.append("text")
-.attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom) + ")")
-.style("text-anchor", "middle")
-.text("Year");
+    svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .attr("d", valueline)
+        //styling:
+        .attr("stroke", "#32CD32")
+        .attr("stroke-width", 2)
+        .attr("fill", "#FFFFFF");
 
-// Add the text label for the Y axis
-svg.append("text")
-.attr("transform", "rotate(-90)")
-.attr("y", 0 - margin.left)
-.attr("x",0 - (height / 2))
-.attr("dy", "1em")
-.style("text-anchor", "middle")
-.text("Total Votes");
+    // Add the text label for the x axis
+    svg.append("text")
+    .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom) + ")")
+    .style("text-anchor", "middle")
+    .text("Year");
 
-// Add dots
-svg.append('g')
-.selectAll("dot")
-.data(data)
-.enter()
-.append("circle")
-  .attr("cx", function (d) { return x(d.year); } )
-  .attr("cy", function (d) { return y(d.yearTotalVotes); } )
-  .attr("r", 5)
-  .style("fill", "#800080")
+    // Add the text label for the Y axis
+    svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Total Votes");
 
- }
+    // Add dots
+    svg.append('g')
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d.year); } )
+      .attr("cy", function (d) { return y(d.yearTotalVotes); } )
+      .attr("r", 5)
+      .style("fill", "#800080")
 
-///////////////////////////////////////////////////////////////
+}
+
+/////////////////////////////QUESTION 3//////////////////////////////
 
 async function question3() {
 
@@ -299,14 +287,14 @@ async function question3() {
   
   if(response.status=200)
   {
-      alert("Query Complete! Click Ok to see the result.");
+      //alert("Query Complete! Click Ok to see the result.");
       if(responseJSON.length === 0) {
           alert('No Data!');
       }
       else {
         //d3barchart(responseJSON);
         verticalBarChart(responseJSON);
-        // d3BAR(responseJSON);
+        //horizontalBarChart(responseJSON);
       }
   }
   else
@@ -315,93 +303,12 @@ async function question3() {
   }
 }
 
-function d3barchart(jsonData) {
+//VERTICAL BARCHART WORKING WELL
+
+function verticalBarChart(jsonData) {
+
   var data = jsonData;
-  console.log("data" +data);
-  // set the dimensions and margins of the graph
-var margin = {top: 20, right: 60, bottom: 60, left: 180},
-width = 960 - margin.left - margin.right,
-height = 800 - margin.top - margin.bottom;
-
-var colors = d3.scaleOrdinal(d3.schemeCategory10);
-
-// append the svg object to the body of the page
-var svg = d3.select("#horizontalBarChart")
-.append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform",
-      "translate(" + margin.left + "," + margin.top + ")");
-
-// Add X axis
-var x = d3.scaleBand()
-.domain(data.map(function(d) { return d.year; }))
-.range([0, width]);
-svg.append("g")
-.attr("transform", "translate(0," + height + ")")
-.call(d3.axisBottom(x))
-.selectAll("text")
-  .attr("transform", "translate(-10,0)rotate(-45)")
-  .style("text-anchor", "end");
-
-// Y axis
-var y = d3.scaleBand()
-.range([height, 0])
-.domain(data.map(function(d) { return d.candidate; }))
-.padding(.1);
-svg.append("g")
-.call(d3.axisLeft(y))
-
-// svg.selectAll("rect")
-//   .data(data)
-//   .enter().append("rect")
-//   .attr("class", "bar")
-//   .attr("x", x(0))
-//   .attr("y", function(d) { return y(d.candidate); })  
-//   .attr("width", function(d) { return x(d.year); } )
-//   .attr("height", y.bandwidth() )
-//   .attr("fill",function(d,i){return colors(i)})
-
-//var barPadding = 5;  
-//var barWidth = (width / data.length);
-
-// //Bars
-let bars = svg.selectAll("myRect")
-.data(data)
-.enter()
-.append("rect")
-.attr("class", "bar")
-.attr("x", x(0))
-.attr("y", function(d) { return y(d.candidate); })  
-.attr("width", function(d) { return x(d.year); } )
-.attr("height", y.bandwidth() )
-.attr("fill",function(d,i){return colors(i)})
-
-bars.append("text")
-    .text(function(d) { 
-        return d.year;
-    })
-    .attr("x", function(d){
-        return x(d.year) + 15;
-    })
-    .attr("y", function(d){
-        console.log(d);
-        return y(d.candidate) + y.bandwidth() * (0.5 + 0.1); // here 0.1 is the padding scale
-    })
-    .attr("class", "text")
-    .attr("text-anchor", "middle")  
-    .attr("font-family" , "sans-serif")
-    .attr("font-size" , "14px")
-    .attr("fill" , "black")
-    .attr("text-anchor", "middle");
-
-}
-
-function verticalBarChart(data) {
-
-  //var data = jsonData;
-  var colors = d3.scaleOrdinal(d3.schemeCategory10);
+  var colors = d3.scaleOrdinal(d3.schemeCategory20b);
 
   console.log("data -->" +data);
 
@@ -410,54 +317,267 @@ function verticalBarChart(data) {
         width = svg.attr("width") - margin,
         height = svg.attr("height") - margin
 
-    svg.append("text")
-       .attr("transform", "translate(100,0)")
-       .attr("x", 50)
-       .attr("y", 50)
-       .attr("font-size", "24px")
-       .text("XYZ Foods Stock Price")
+  svg.append("text")
+  .attr("transform", "translate(100,0)")
+  .attr("x", 200)
+  .attr("y", 30)
+  .attr("font-size", "25px")
+  .text("VERTICAL BAR CHART")
 
-    var xScale = d3.scaleBand().range([0, width]).padding(0.4),
-        yScale = d3.scaleBand().range([height, 0]);
+  var xScale = d3.scaleBand().range([0, width]).padding(0.4),
+      yScale = d3.scaleLinear().range([height, 0]);
 
-    var g = svg.append("g")
-               .attr("transform", "translate(" + 100 + "," + 100 + ")");
+  var g = svg.append("g")
+              .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
 
-        xScale.domain(data.map(function(d) { return d.candidate; }));
-        yScale.domain(data.map(function(d) { return d.year; }));
+  xScale.domain(data.map(function(d) { return d.candidate; })); 
+  yScale.domain(d3.extent(data.map(function(d) { return d.year; })));
 
-        g.append("g")
-         .attr("transform", "translate(0," + height + ")")
-         .call(d3.axisBottom(xScale))
-         .selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", ".15em").attr("y", "2").attr("transform", "rotate(-90)" )
-         .append("text")
-         .attr("y", height - 250)
-         .attr("x", width - 100)
-         .attr("text-anchor", "end")
-         .attr("stroke", "black")
-         .text("Year");
+  g.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale))
+    .selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", ".15em").attr("y", "2").attr("transform", "rotate(-90)" )
 
-        g.append("g")
-         .call(d3.axisLeft(yScale).tickFormat(function(d){
-             return d;
-         })
-         .ticks(10))
-         .append("text")
-         .attr("transform", "rotate(-90)")
-         .attr("y", 6)
-         .attr("dy", "-5.1em")
-         .attr("text-anchor", "end")
-         .attr("stroke", "black")
-         .text("Stock Price");
+  g.append("g")
+  .append("text")
+  .attr("y", margin + 100)
+  .attr("x", (width)/2)
+  .attr("text-anchor", "end")
+  .attr("fill", "black")
+  .attr("font-size", "20px")
+  .text("Candidate");
 
-        g.selectAll(".bar")
-         .data(data)
-         .enter().append("rect")
-         .attr("class", "bar")
-         .attr("x", function(d) { return xScale(d.candidate); })
-         .attr("y", function(d) { return yScale(d.year); })
-         .attr("width", xScale.bandwidth())
-         .attr("height", function(d) { return height - yScale(d.year); })
-         .attr("fill",function(d,i){return colors(i)});
+  g.append("g")
+    .call(d3.axisLeft(yScale)
+    .tickFormat(function(d){
+        return d;
+    })
+    .ticks(10)
+  )
+  .append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 30)
+  .attr("x", -150)
+  .attr("dy", "-5.1em")
+  .attr("text-anchor", "end")
+  .attr("fill", "black")
+  .attr("font-size", "20px")
+  .text("Year");
+
+  let barVer =    g.selectAll(".bar")
+    .data(data)
+    .enter().append("g");
+    
+    barVer.append("rect")
+    .attr("class", "bar")
+    .attr("x", function(d) { return xScale(d.candidate); })
+    .attr("y", function(d) { return yScale(d.year); })
+    .attr("width", xScale.bandwidth())
+    .attr("height", function(d) { return height - yScale(d.year); })
+    .attr("fill",function(d,i){return colors(i)});
+    
+    barVer.append("text")
+    .text(function (d) {
+      return d.year;
+    })
+    .attr("x", function (d) {
+    console.log(d);
+    return xScale(d.candidate) + xScale.bandwidth() * (0.5 + 0.1); // here 0.1 is the padding scale
+  })
+  .attr("y", function (d) {
+    return yScale(d.year) - 5 ;
+  })
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "14px")
+    .attr("fill", "black")
+    .attr("text-anchor", "middle");
 }
+
+//HORIZONTAL BARCHART WORKING WELL
+
+function horizontalBarChart(data1) {
+
+  var dict = {};
+  var colors = d3.scaleOrdinal(d3.schemeCategory10);
+
+
+  data1.forEach(i => {
+    dict[i.candidate] = i.year;
+  });
+
+  console.log(dict)
+
+  let data = dict;
+
+  let margin = { top: 80, right: 80, bottom: 80, left: 252 };
+  let svgWidth = 800, svgHeight = 600;
+  let height = svgHeight - margin.top - margin.bottom, width = svgWidth - margin.left - margin.right;
+  let sourceNames = [], sourceCount = [];
+
+  //var maximumY = d3.extent(sourceCount);
+  //y.domain([-(maximumY * .02), maximumY]);
+
+  let x = d3.scaleLinear().range([0, width]),
+    y = d3.scaleBand().rangeRound([0, height]).padding(0.1);
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      sourceNames.push(key);
+      sourceCount.push(parseInt(data[key]));
+    }
+  }
+  x.domain(d3.extent(sourceCount));
+  y.domain(sourceNames);
+
+  let svg = d3.select("#horizontalBarChart").append("svg");
+  svg.attr('height', svgHeight)
+    .attr('width', svgWidth);
+
+  svg.append("text")
+    .attr("transform", "translate(100,0)")
+    .attr("x", 300)
+    .attr("y", 20)
+    .attr("font-size", "20px")
+    .text("HORIZONTAL BAR CHART")
+
+  svg = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  svg.append("g")
+    .attr("transform", "translate(0, " + height + ")")
+    .call(d3.axisBottom(x))
+    .append("text")
+    .attr("y", margin.bottom - 5)
+    .attr("x", (svgWidth - margin.right - (margin.left)/3)/2)
+    .attr("text-anchor", "end")
+    .attr("fill", "black")
+    .attr("font-size", "20px")
+    .text("Year");
+
+  svg.append("g")
+    .call(d3.axisLeft(y))
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -40)
+    .attr("x", -150)
+    .attr("dy", "-5.1em")
+    .attr("text-anchor", "end")
+    .attr("fill", "black")
+    .attr("font-size", "20px")
+    .text("Candidate");
+
+  // Create rectangles
+  let bars = svg.selectAll('.bar')
+    .data(sourceNames)
+    .enter()
+    .append("g");
+
+  bars.append('rect')
+    .attr('class', 'bar')
+    .attr("x", function (d) { return 0; })
+    .attr("y", function (d) { return y(d); })
+    .attr("width", function (d) { return x(data[d]) })
+    .attr("height", function (d) { return y.bandwidth(); })
+    .attr("fill",function(d,i){return colors(i)});
+
+  bars.append("text")
+    .text(function (d) {
+      return data[d];
+    })
+    .attr("x", function (d) {
+      return x(data[d]) + 20;
+    })
+    .attr("y", function (d) {
+      console.log(d);
+      return y(d) + y.bandwidth() * (0.5 + 0.1); // here 0.1 is the padding scale
+    })
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "14px")
+    .attr("fill", "black")
+    .attr("text-anchor", "middle");
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+// function d3barchart(jsonData) {
+//   var data = jsonData;
+//   console.log("data" +data);
+//   // set the dimensions and margins of the graph
+// var margin = {top: 20, right: 60, bottom: 60, left: 180},
+// width = 960 - margin.left - margin.right,
+// height = 800 - margin.top - margin.bottom;
+
+// var colors = d3.scaleOrdinal(d3.schemeCategory10);
+
+// // append the svg object to the body of the page
+// var svg = d3.select("#horizontalBarChart")
+// .append("svg")
+// .attr("width", width + margin.left + margin.right)
+// .attr("height", height + margin.top + margin.bottom)
+// .append("g")
+// .attr("transform",
+//       "translate(" + margin.left + "," + margin.top + ")");
+
+// // Add X axis
+// var x = d3.scaleBand()
+// .domain(data.map(function(d) { return d.year; }))
+// .range([0, width]);
+// svg.append("g")
+// .attr("transform", "translate(0," + height + ")")
+// .call(d3.axisBottom(x))
+// .selectAll("text")
+//   .attr("transform", "translate(-10,0)rotate(-45)")
+//   .style("text-anchor", "end");
+
+// // Y axis
+// var y = d3.scaleBand()
+// .range([height, 0])
+// .domain(data.map(function(d) { return d.candidate; }))
+// .padding(.1);
+// svg.append("g")
+// .call(d3.axisLeft(y))
+
+// // svg.selectAll("rect")
+// //   .data(data)
+// //   .enter().append("rect")
+// //   .attr("class", "bar")
+// //   .attr("x", x(0))
+// //   .attr("y", function(d) { return y(d.candidate); })  
+// //   .attr("width", function(d) { return x(d.year); } )
+// //   .attr("height", y.bandwidth() )
+// //   .attr("fill",function(d,i){return colors(i)})
+
+// //var barPadding = 5;  
+// //var barWidth = (width / data.length);
+
+// // //Bars
+// let bars = svg.selectAll("myRect")
+// .data(data)
+// .enter()
+// .append("rect")
+// .attr("class", "bar")
+// .attr("x", x(0))
+// .attr("y", function(d) { return y(d.candidate); })  
+// .attr("width", function(d) { return x(d.year); } )
+// .attr("height", y.bandwidth() )
+// .attr("fill",function(d,i){return colors(i)})
+
+// bars.append("text")
+//     .text(function(d) { 
+//         return d.year;
+//     })
+//     .attr("x", function(d){
+//         return x(d.year) + 15;
+//     })
+//     .attr("y", function(d){
+//         console.log(d);
+//         return y(d.candidate) + y.bandwidth() * (0.5 + 0.1); // here 0.1 is the padding scale
+//     })
+//     .attr("class", "text")
+//     .attr("text-anchor", "middle")  
+//     .attr("font-family" , "sans-serif")
+//     .attr("font-size" , "14px")
+//     .attr("fill" , "black")
+//     .attr("text-anchor", "middle");
+
+// }
