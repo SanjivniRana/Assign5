@@ -97,16 +97,26 @@ application.post('/question2API', async (request, response) => {
 });
 
 
+// application.post('/question3API', async (request, response) => {
+//     let year1 = request.body.year1;
+//     let year2 = request.body.year2;
+//     let state = request.body.state;
+//     let query = "SELECT TOP 20 [year], candidate FROM [dbo].[presidentialelect] WHERE [year] BETWEEN " +year1+ " AND " +year2+ " AND state_po = '" +state+ "' AND candidate IS NOT NULL AND [year] IS NOT NULL ORDER BY [year] FOR JSON PATH";
+//     console.log("Q3 query --> " +query);
+//     execSQLQuery(query).then(success => {
+//         response.send(JSON.parse(success))
+//     }).catch(err => { console.log("Error", err)})
+// });
+
 application.post('/question3API', async (request, response) => {
-    let year1 = request.body.year1;
-    let year2 = request.body.year2;
-    let state = request.body.state;
-    let query = "SELECT TOP 20 [year], candidate FROM [dbo].[presidentialelect] WHERE [year] BETWEEN " +year1+ " AND " +year2+ " AND state_po = '" +state+ "' AND candidate IS NOT NULL AND [year] IS NOT NULL ORDER BY [year] FOR JSON PATH";
+    let query = request.body.query;
+    //let query = "SELECT TOP 20 [year], candidate FROM [dbo].[presidentialelect] WHERE [year] BETWEEN " +year1+ " AND " +year2+ " AND state_po = '" +state+ "' AND candidate IS NOT NULL AND [year] IS NOT NULL ORDER BY [year] FOR JSON PATH";
     console.log("Q3 query --> " +query);
     execSQLQuery(query).then(success => {
         response.send(JSON.parse(success))
     }).catch(err => { console.log("Error", err)})
 });
+
 
 const portName = process.env.portName || 8080;
 

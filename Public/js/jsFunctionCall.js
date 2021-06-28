@@ -277,8 +277,8 @@ function d3ScatterPlot(jsonData)
     .text("SCATTER PLOT")
 
     // Add X axis
-    var x = d3.scaleLinear()
-    .domain(d3.extent(data, function(d) { return d.year; }))
+    var x = d3.scaleBand()
+    .domain(data.map(function(d) { return d.Volcano_Name; }))
     .range([ 0, width ]);
     svg.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -286,34 +286,34 @@ function d3ScatterPlot(jsonData)
 
     // Add Y axis
     var y = d3.scaleLinear()
-    .domain(d3.extent(data, function(d) { return d.yearTotalVotes; }))
+    .domain(d3.extent(data, function(d) { return d.Latitude; }))
     .range([ height, 0]);
     svg.append("g")
     .call(d3.axisLeft(y));
 
-    //Add lines
-    var valueline = d3.line()
-        .x(function (d) {
-              return x(d.year);
-        })
-        .y(function (d) {
-              return y(d.yearTotalVotes);
-        });
+    // //Add lines
+    // var valueline = d3.line()
+    //     .x(function (d) {
+    //           return x(d.Volcano_Name);
+    //     })
+    //     .y(function (d) {
+    //           return y(d.Latitude);
+    //     });
 
-    svg.append("path")
-        .data([data])
-        .attr("class", "line")
-        .attr("d", valueline)
-        //styling:
-        .attr("stroke", "#32CD32")
-        .attr("stroke-width", 2)
-        .attr("fill", "#FFFFFF");
+    // svg.append("path")
+    //     .data([data])
+    //     .attr("class", "line")
+    //     .attr("d", valueline)
+    //     //styling:
+    //     .attr("stroke", "#32CD32")
+    //     .attr("stroke-width", 2)
+    //     .attr("fill", "#FFFFFF");
 
     // Add the text label for the x axis
     svg.append("text")
     .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom) + ")")
     .style("text-anchor", "middle")
-    .text("Year");
+    .text("Volcano Name");
 
     // Add the text label for the Y axis
     svg.append("text")
@@ -322,7 +322,7 @@ function d3ScatterPlot(jsonData)
     .attr("x",0 - (height / 2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("Total Votes");
+    .text("Latitude");
 
     // Add dots
     svg.append('g')
@@ -330,8 +330,8 @@ function d3ScatterPlot(jsonData)
     .data(data)
     .enter()
     .append("circle")
-      .attr("cx", function (d) { return x(d.year); } )
-      .attr("cy", function (d) { return y(d.yearTotalVotes); } )
+      .attr("cx", function (d) { return x(d.Volcano_Name); } )
+      .attr("cy", function (d) { return y(d.Latitude); } )
       .attr("r", 5)
       .style("fill", "#800080")
 
@@ -374,37 +374,37 @@ function d3ScatterPlot(jsonData)
 // }
 
 async function question3() {
-
-  var year1 = $('#year1').val();
-  var year2 = $('#year2').val();
-  var state = $('#q3State').val();
-
-  let response = await fetch('/question3API', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({year1: year1, year2: year2, state: state})
-    });
-  let responseJSON = await response.json();
+    // let createquery = $('#gettables').val();
+    let range1 = $('#volcano1').val();
+    let range2 = $('#volcano2').val();
   
-  if(response.status=200)
-  {
-      //alert("Query Complete! Click Ok to see the result.");
-      if(responseJSON.length === 0) {
-          alert('No Data!');
-      }
-      else {
-        //d3barchart(responseJSON);
-        verticalBarChart(responseJSON);
-        //horizontalBarChart(responseJSON);
-      }
-  }
-  else
-  {
-      alert("Something went wrong")
-  }
+    // let query = "SELECT top 6 COUNT(totalvotes) AS Count, party_detailed AS party FROM presidentialelect GROUP BY party_detailed FOR JSON PATH";
+    let query;
+    let callResp, respdata;
+    let dic = {}
+    let r1 = parseInt(range1)/1000;
+    let r2 = parseInt(range2)/1000;
+  
+  
+      query = "SELECT Volcano_Name, Longitude from volcanosxr where Longitude between "+r1+" and "+r2+" FOR JSON PATH";
+  
+      // SELECT Volcano_Name, Longitude from [dbo].[v1] where Longitude between 80.317 and 140.208
+  
+  
+      callResp = await fetch('/question3API', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: query })
+      });
+      const data = await callResp.json();
+    
+      console.log(data);
+
+      d3ScatterPlot(data);
+
 }
 
 //VERTICAL BARCHART WORKING WELL
