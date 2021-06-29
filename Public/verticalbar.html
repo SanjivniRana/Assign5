@@ -32,7 +32,7 @@ ID: 1001820277 -->
             left: 0;
             background-color: rgb(0, 0, 0);
             overflow-x: hidden;
-            transition: 0.5s;   
+            transition: 0.5s;
             padding-top: 60px;
             }
 
@@ -86,39 +86,25 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                    <!-- <h2>Question 2</h2>
-                    </br>
-                    <div class="Q1div">
-                        <label>Please provide the Range of Year:</label></br>
-                        <label>Range 1: </label><input type="text" class="form-control" id="yearR1">
-                        <label>Range 2: </label><input type="text" class="form-control" id="yearR2">
-                        </br>
-                        <label>Please provide the State:</label></br>
-                        <input type="text" class="form-control" id="q2State">
-                        </br>
-                        <button class="btn btn-success executebtn" onclick="question2()">Result</button>
-                        <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
-                    </div> -->
-
-
-                    <h2>Question 6</h2>
-                    </br>
-                    <div class="Q1div">
-                        <label>Country Name: </label><input type="text" class="form-control" id="countryName">
-                        <button class="btn btn-success executebtn" onclick="question2()">Result</button>
-                        <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
-                    </div>
-
+                <h2>VERTICAL BARGRAPH</h2>
+                </br>
+                <div class="vBar">
+                    <label>Please provide a Country and the bar graph will display the top 5 Volcano names in ascending order and it's corresponding Number</label>
                     </br>
                     </br>
-                    <div class="d3js">
-                        <h4>Result:</h4>
-                        </br>
+                    <label>Country: </label><input type="text" class="form-control" id="countryVB">
+                    </br>
+                    <button class="btn btn-success executebtn" onclick="function3()">Result</button>
+                    <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
+                </div>
 
-                        <!-- <div id="my_dataviz"></div> -->
-                        <svg width="1200" height="1000"></svg>
-
-                    </div>
+                </br>
+                </br>
+                <div class="d3js">
+                    <h4>Result:</h4>
+                    </br>
+                    <svg width="1200" height="1000"> </svg>
+                </div>
             </div>
         </div>
 

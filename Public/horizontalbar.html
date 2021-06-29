@@ -32,7 +32,7 @@ ID: 1001820277 -->
             left: 0;
             background-color: rgb(0, 0, 0);
             overflow-x: hidden;
-            transition: 0.5s;   
+            transition: 0.5s;
             padding-top: 60px;
             }
 
@@ -86,41 +86,24 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                    <!-- <h2>Question 3</h2>
-                    </br>
-                    <div class="Q1div">
-                        <label>Please provide the Range of Year:</label></br>
-                        <label>Range 1: </label><input type="text" class="form-control" id="year1">
-                        <label>Range 2: </label><input type="text" class="form-control" id="year2">
-                        </br>
-                        <label>Please provide the State:</label></br>
-                        <input type="text" class="form-control" id="q3State">
-                        </br>
-                        <button class="btn btn-success executebtn" onclick="question3()">Result</button>
-                        <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
-                    </div> -->
-
-                    <h2>Question 7</h2>
-                    </br>
-                    <div class="Q1div">
-                        <label>Volcano Range 1: </label><input type="text" class="form-control" id="volcano1">
-                        <label>Volcano Range 2: </label><input type="text" class="form-control" id="volcano2">
-                        </br>
-                        <button class="btn btn-success executebtn" onclick="question3()">Result</button>
-                        <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
-                    </div>
-
+                <h2>HORIZONTAL BARGRAPH</h2>
+                </br>
+                <div class="hBar">
+                    <label>Please provide a Country and the bar graph will display the top 5 Volcano names in ascending order and it's corresponding Number</label>
                     </br>
                     </br>
-                    <div class="d3js">
-                        <h4>Result:</h4>
-                        </br>
-                        <div id="my_dataviz"></div>
-                        
-                        <!-- <div id="horizontalBarChart"></div> -->
-                        <!-- <div id="verticalBarChart"></div> -->
-                        <!-- <svg width="1200" height="1000"></svg> -->
-                    </div>
+                    <label>Country: </label><input type="text" class="form-control" id="countryHB">
+                    </br>
+                    <button class="btn btn-success executebtn" onclick="function4()">Result</button>
+                    <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
+                </div>
+                </br>
+                </br>
+                <div class="d3js">
+                    <h4>Result:</h4>
+                    </br>
+                    <div id="horizontalBarChart"></div>
+                </div>
             </div>
         </div>
 

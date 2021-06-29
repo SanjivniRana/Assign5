@@ -1,7 +1,7 @@
 {
-  "name": "assign2_sxr",
+  "name": "SR_ADB_Q4_VOLCANO",
   "version": "1.0.0",
-  "description": "ADB Assignment 2",
+  "description": "ADB Assignment 4",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

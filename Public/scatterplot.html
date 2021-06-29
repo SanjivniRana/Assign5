@@ -86,27 +86,29 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                <h2>PIE CHART</h2>
+                <h2>SCATTER PLOT</h2>
                 </br>
-                <div class="pie">
-                    <label>Please provide the Year (eg. 2016) and State Code (eg. AL) and the result will display a pie chart which will represent the percentage of top 4 candidate votes from that state in that year.</label>
+                <div class="scatter">
+                    <label>Provide the Range of Years (eg. 1990 to 2010) and State Code (eg. KS) and the result will show the scatter plot for the total votes in that year for that state.</label>
                     </br>
                     </br>
-                    <label>Please provide the Year:</label></br>
-                    <input type="text" class="form-control" id="q1Year">
+                    <label>Please provide the Range of Year:</label></br>
+                    <label>Range 1: </label><input type="text" class="form-control" id="yearR1">
+                    <label>Range 2: </label><input type="text" class="form-control" id="yearR2">
                     </br>
                     <label>Please provide the State:</label></br>
-                    <input type="text" class="form-control" id="q1State">
+                    <input type="text" class="form-control" id="q2State">
                     </br>
-                    <button class="btn btn-success executebtn" onclick="function1()">Result</button>
+                    <button class="btn btn-success executebtn" onclick="function2()">Result</button>
                     <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
                 </div>
+
                 </br>
                 </br>
                 <div class="d3js">
                     <h4>Result:</h4>
                     </br>
-                    <svg width="1200" height="1000"> </svg>
+                    <div id="my_dataviz"></div>
                 </div>
             </div>
         </div>
