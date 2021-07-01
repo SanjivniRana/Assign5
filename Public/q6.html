@@ -86,30 +86,36 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                <h2>SCATTER PLOT</h2>
+                <h2>QUESTION 6</h2>
                 </br>
-                <div class="scatter">
-                    <label>Provide the Range of Years (eg. 1990 to 2010) and State Code (eg. KS) and the result will show the scatter plot for the total votes in that year for that state.</label>
+                <!-- <div class="search">
+                    <h5>Enter your HTML text below</h5>
                     </br>
+                    <textarea id="htmltext" rows="4" cols="50"></textarea>
                     </br>
-                    <label>Please provide the Range of Year:</label></br>
-                    <label>Range 1: </label><input type="text" class="form-control" id="yearR1">
-                    <label>Range 2: </label><input type="text" class="form-control" id="yearR2">
-                    </br>
-                    <label>Please provide the State:</label></br>
-                    <input type="text" class="form-control" id="q2State">
-                    </br>
-                    <button class="btn btn-success executebtn" onclick="function2()">Result</button>
+                    <button class="btn btn-success executebtn" onclick="searchQ2()">Search</button>
                     <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
                 </div>
-
                 </br>
                 </br>
-                <div class="d3js">
+                <div>
                     <h4>Result:</h4>
                     </br>
-                    <div id="my_dataviz"></div>
-                </div>
+                    <label id="tagsResult"></label>
+                </div> -->
+                <h4>Upload Stopwords file to be removed from textfile</h4>
+                    </br>
+                    <input type="file" class="form-control" id="stopwordstxt">
+                    <button class="btn btn-success executebtn" onclick="setStopwords()">Upload stopwords file</button>
+                    <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
+                    </br>
+                    </br>
+                    </br>
+                    <h4>Click to see the previously uploaded file after removing the stopwords from the file uploaded above</h4>
+                    <button class="btn btn-success executebtn" onclick="removeStopwords()">CLICK</button>
+                    </br>
+                    </br>
+                    <div id="afterSW"></div>
             </div>
         </div>
 

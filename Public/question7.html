@@ -32,7 +32,7 @@ ID: 1001820277 -->
             left: 0;
             background-color: rgb(0, 0, 0);
             overflow-x: hidden;
-            transition: 0.5s;
+            transition: 0.5s;   
             padding-top: 60px;
             }
 
@@ -86,24 +86,27 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                <h2>VERTICAL BARGRAPH</h2>
+                <h2>QUESTION 7</h2>
                 </br>
-                <div class="vBar">
-                    <label>Please provide a Country and the bar graph will display the top 5 Volcano names in ascending order and it's corresponding Number</label>
+                <div class="search">
+                    <h4>Search</h4>
+                    <label>Enter the value of N</label>
+                    <input type="text" class="form-control" id="countRec" placeholder="Number of records">
                     </br>
-                    </br>
-                    <label>Country: </label><input type="text" class="form-control" id="countryVB">
-                    </br>
-                    <button class="btn btn-success executebtn" onclick="function3()">Result</button>
+                    <!-- <label>Enter file name</label>
+                    <input type="text" class="form-control" id="fnInput" placeholder="File Name"> -->
+                    <button class="btn btn-success executebtn" onclick="question1()">Search</button>
                     <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
                 </div>
-
                 </br>
                 </br>
-                <div class="d3js">
+                <div>
                     <h4>Result:</h4>
+                    <label>Below will be displayed the N most and least occurring words for the file uploaded in question 5.</label>
                     </br>
-                    <svg width="1200" height="1000"> </svg>
+                    </br>
+                    <div style="width: 50%; float:left" id="mostFreq"></div>
+                    <div style="width: 50%; float:right" id="leastFreq"></div>
                 </div>
             </div>
         </div>

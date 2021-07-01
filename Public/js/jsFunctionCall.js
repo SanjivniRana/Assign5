@@ -1,457 +1,315 @@
-///////////////////////////PIE CHART/////////////////////////////
 
-async function function1() {
+function uploadFile() {
 
-  var year = $('#q1Year').val();
-  var state = $('#q1State').val();
+  var fileContent; var cleanedFile;
+  var file = document.getElementById("textFile").files[0];
 
-  let response = await fetch('/function1API', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({year: year, state: state})
-    });
-  let responseJSON = await response.json();
-  
-  if(response.status=200)
-  {
-      if(responseJSON.length === 0) {
-          alert('No Data!');
-      }
-      else {
-         d3PieChart(responseJSON);
-      }
-  }
-  else
-  {
-      alert("Something went wrong")
+  if (file) {
+    var read = new FileReader();
+    read.onload = function(e) { 
+      fileContent = e.target.result;
+      // alert(fileContent);
+      // alert( "Got the file.n" 
+      //       +"name: " + file.name + "n"
+      //       +"type: " + file.type + "n"
+      //       +"size: " + file.size + " bytesn"
+      //      );  
+      cleanFile(fileContent,file.name);
+    }
+    read.readAsText(file);
+  } 
+  else { 
+    alert("Failed to load file");
   }
 }
 
-function d3PieChart(jsonData) {
+function cleanFile(content,filename) {
+  var stopwords = [];
+  stopwords = JSON.parse(localStorage.getItem("StopWords"));
+  content = content.replaceAll(/[^A-Za-z0-9' ]/g, ' ');
+  content = content.replace(/[']/g, "").trim();
+  content = content.replace(/\s+/g,' ').trim();
+  content = strLowerCase(content);
 
-  var data = jsonData;
-        
-  var svg = d3.select("svg"),
-            width = svg.attr("width"),
-            height = svg.attr("height"),
-            radius = Math.min(width, height) / 3;
-        
-  var g = svg.append("g")
-              .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  for(i=0; i<stopwords.length; i++)
+  {
+    var sw = stopwords[i];
+    var regex = new RegExp("\\b"+sw+"\\b","g");
+    content = content.replaceAll(regex, '');
+    content = content.replace(/\s+/g,' ').trim();
+  }
+  alert(content);
+  localStorage.setItem("filename", JSON.stringify(content));
+}
 
-  var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c','#F08080']);
+function strLowerCase(str) {
+  let newStr = "";
+  for(let i = 0; i < str.length; i++) {
+      let code = str.charCodeAt(i);
+      if(code >= 65 && code <= 90) {
+          code += 32;
+      } newStr += String.fromCharCode(code);
+  } return newStr;
+}
 
-  var pie = d3.pie().value(function(d) { 
-          return d.percentage; 
-      });
+function setStopwords() {
+  var swcontent; 
+  var swarray;
+  var swfile = document.getElementById("stopwordstxt").files[0];
 
-  var path = d3.arc()
-                .outerRadius(radius - 10)
-                .innerRadius(0);
-
-  var label = d3.arc()
-                .outerRadius(radius)
-                .innerRadius(radius - 200);
-
-  var arc = g.selectAll(".arc")
-            .data(pie(data))
-            .enter().append("g")
-            .attr("class", "arc");
-
-  arc.append("path")
-    .attr("d", path)
-    .attr("fill", function(d) { return color(d.data.percentage); });
-
-  arc.append("text") 
-  .attr("transform", function(d,i) {
-  
-    var centroid_value = label.centroid(d);
-
-    var pieValue = ((d.endAngle - d.startAngle)*100)/(2*Math.PI);                
-    var accuratePieValue = pieValue.toFixed(0);
-    if(accuratePieValue <= 5){
-        var pieLableArc = d3.arc().innerRadius(i*20).outerRadius(radius + i*20);
-        centroid_value = pieLableArc.centroid(d);
+  if (swfile) {
+    var read = new FileReader();
+    read.onload = function(e) { 
+      swcontent = e.target.result;
+      swcontent = swcontent.replaceAll(/[^A-Za-z0-9' ]/g, ' ');
+      swcontent = swcontent.replace(/[']/g, "")
+      swcontent = swcontent.replace(/\s+/g,' ').trim();
+      swarray = swcontent.split(' ');
+      localStorage.setItem("StopWords", JSON.stringify(swarray));
     }
-    return "translate(" + centroid_value + ")";
-    }).attr("dy", ".35em")
-    .style("text-anchor", "middle")
-    .style("opacity", 1)
-    .text(function(d) { return d.data.percentage; 
+    read.readAsText(swfile);
+    alert("Stopwords loaded.");
+  } 
+  else { 
+    alert("Failed to load file");
+  }
+}
+
+function searchQ1() {
+
+  var count = document.getElementById("countRec").value;
+  var fname = document.getElementById("fnInput").value;
+
+  var cleanContent = localStorage.getItem(fname);
+  var words = cleanContent.replace(/[.]/g, '').split(/\s/);
+  var wordFreqDict = {};
+  words.forEach(function (w) {
+      if (!wordFreqDict[w]) {
+        wordFreqDict[w] = 0;
+      }
+      wordFreqDict[w] += 1;
   });
 
-  svg.append("g")
-    .attr("transform", "translate(" + (width / 2 - 200) + "," + 40 + ")")
-    .append("text")
-    .text("PIE CHART")
-    .attr("class", "title")
-    .attr("font-size" , "30px");
-}
+  var mostFreqWords = Object
+      .keys(wordFreqDict)
+      .sort(function (a, b) { return wordFreqDict[b] - wordFreqDict[a]; })
 
-///////////////////////////SCATTER PLOT////////////////////////////
+  var leastFreqWords = Object
+  .keys(wordFreqDict)
+  .sort(function (a, b) { return wordFreqDict[b] - wordFreqDict[a]; }).reverse();
 
-async function function2() {
+  let least = {}; let most = {}; 
+  let  listLastN = []; let listTopN = [];
 
-  var year1 = $('#yearR1').val();
-  var year2 = $('#yearR2').val();
-  var state = $('#q2State').val();
-
-  let response = await fetch('/function2API', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({year1: year1, year2: year2, state: state})
-    });
-  let responseJSON = await response.json();
+  for (let i = 0; i < count; i++) {
+      var key = mostFreqWords[i];
+      most[mostFreqWords[i]] = wordFreqDict[mostFreqWords[i]]
+      least[leastFreqWords[i]] = wordFreqDict[leastFreqWords[i]]
   
-  if(response.status=200)
-  {
-      if(responseJSON.length === 0) {
-          alert('No Data!');
-      }
-      else {
-        d3ScatterPlot(responseJSON);
-      }
-  }
-  else
-  {
-      alert("Something went wrong")
-  }
+  listTopN.push({
+    word: mostFreqWords[i],
+    count: wordFreqDict[mostFreqWords[i]]
+  })
+  listLastN.push({
+    word: leastFreqWords[i],
+    count: wordFreqDict[leastFreqWords[i]]
+  })
 }
 
-function d3ScatterPlot(jsonData)     
-{    
-  var data = jsonData;
+$("#mostFreq").append("<h5>Most frequent " +count+ " words in the file: </h5>");
+listTopN.forEach(a => {
+  $("#mostFreq").append(`<p style="background:LightGray;">The word <i>${a.word}</i> is repeated <b>${a.count}</b> times.</p>`)
+})
 
-  // set the dimensions and margins of the graph
-  var margin = {top: 80, right: 60, bottom: 60, left: 120},
-  width = 1000 - margin.left - margin.right,
-  height = 600 - margin.top - margin.bottom;
+$("#leastFreq").append("<h5>Least frequent " +count+ " words in the file:</h5>");
+listLastN.forEach(a => {
+  $("#leastFreq").append(`<p style="background:LightGray;">The word <i>${a.word}</i> is repeated <b>${a.count}</b> times.</p>`)
+})
 
-  // append the svg object to the body of the page
-  var svg = d3.select("#my_dataviz")
-  .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+ // $('#mostFreq').empty().append("Most frequent " +count+ " words in the file: " +JSON.stringify(listTopN[0]));
+  //$('#leastFreq').empty().append("Least frequent " +count+ " words in the file: " +JSON.stringify(listLastN[0]));
 
-  svg.append("text")
-  .attr("transform", "translate(100,0)")
-  .attr("x", 200)
-  .attr("y", -60)
-  .attr("font-size", "25px")
-  .text("SCATTER PLOT")
+}
 
-  // Add X axis
-  var x = d3.scaleLinear()
-  .domain(d3.extent(data, function(d) { return d.year; }))
-  .range([ 0, width ]);
-  svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x));
+function searchQ2() {
 
-  // Add Y axis
-  var y = d3.scaleLinear()
-  .domain(d3.extent(data, function(d) { return d.yearTotalVotes; }))
-  .range([ height, 0]);
-  svg.append("g")
-  .call(d3.axisLeft(y));
+  let open = "", close = "";
+  let startTag; let endTag;
 
-  //Add lines
-  var valueline = d3.line()
-  .x(function (d) {
-        return x(d.year);
-  })
-  .y(function (d) {
-        return y(d.yearTotalVotes);
+  var htmlText = document.getElementById("htmltext").value;
+  var stopwords = [];
+  stopwords = JSON.parse(localStorage.getItem("StopWords"));
+  htmlText = htmlText.replaceAll(/[^A-Za-z0-9'<>/ ]/g, ' ');
+  htmlText = htmlText.replace(/[']/g, "")
+  htmlText = htmlText.replace(/\s+/g,' ').trim();
+  htmlText = strLowerCase(htmlText);
+
+  for(i=0; i<stopwords.length; i++)
+  {
+    var sw = stopwords[i];
+    var regex = new RegExp("\\b"+sw+"\\b","g");
+    htmlText = htmlText.replaceAll(regex, '');
+    htmlText = htmlText.replace(/\s+/g,' ').trim();
+  }
+
+  //localStorage.setItem("HtmlTextQ2", JSON.stringify(htmlText));
+
+  for (let i = 0; i < htmlText.length; i++) {
+    var tagIndex = htmlText.charAt(i);
+    if (tagIndex === "<" && htmlText.charAt(i + 1) !== "/") {
+      startTag = 1;
+    }
+    if (startTag === 1 && tagIndex === ">") {
+      open = open + ">" + ","
+      startTag = 0;
+    }
+    if (tagIndex === "<" && htmlText.charAt(i + 1) === "/") {
+      endTag = 1;
+    }
+    if (endTag === 1 && tagIndex === ">") {
+      close = close + ">" + ","
+      endTag = 0;
+    }
+    if (startTag === 1) {
+      open = open + tagIndex;
+    }
+    if (endTag === 1) {
+      close = close + tagIndex;
+    }
+  }
+
+  console.log(open.split(","))
+  console.log("**********")
+  console.log(close.split(","))
+
+}
+
+function searchQ3() {
+
+  var text = document.getElementById("htmltextQ3").value;
+  var oldtag = document.getElementById("oldTag").value;
+  var newtag = document.getElementById("newTag").value;
+
+  text = text.replaceAll(oldtag,newtag);
+
+  var endOldTag = oldtag.slice(1,-1);
+  endOldTag = "</"+endOldTag+">";
+  var endNewTag = newtag.slice(1,-1);
+  endNewTag = "</"+endNewTag+">";
+
+  text = text.replaceAll(endOldTag,endNewTag);
+  document.getElementById("newHtmlText").style.display = 'block';
+  $('#newHtmlText').empty().append(text);
+  //alert(text);
+}
+
+function Q1() {
+  var textname = document.getElementById("textName").value;
+  var textValue = document.getElementById("text1").value;
+  //var keyTextName = textname;
+  //cleanFile(textValue,textname);
+  textValue = textValue.replaceAll(/[^A-Za-z0-9' ]/g, ' ');
+  textValue = textValue.replace(/[']/g, "").trim();
+  textValue = textValue.replace(/\s+/g,' ').trim();
+  textValue = strLowerCase(textValue);
+  alert('File saved succesfully!');
+  var wordCount = textValue.split(' ');
+  $('#q1Label1').empty().append("Filename is " +textname+"file.txt");
+  $('#q1Label2').empty().append("Word count is " +wordCount.length  );
+
+  localStorage.setItem("filename", JSON.stringify(textValue));
+}
+
+function Q1Part2() {
+
+  var word = document.getElementById("text2").value;
+
+  var cleanContent = localStorage.getItem("filename");
+  //alert(cleanContent);
+
+  var result = cleanContent.split(" ");
+//console.log(result);
+  //alert(result);
+  let count = 0;
+  result.forEach(a => {
+    if(a === word){
+      count = count + 1;
+    }
+  });
+  //alert(count);
+  $("#count1").empty.append("Count is " +count);
+}
+
+function question1() {
+
+  var count = document.getElementById("countRec").value;
+  //var fname = document.getElementById("fnInput").value;
+
+  var cleanContent = localStorage.getItem("filename");
+  var words = cleanContent.replace(/[.]/g, '').split(/\s/);
+  alert('Punctuations and stopwords removed. click ok to see the result')
+  var wordFreqDict = {};
+  words.forEach(function (w) {
+      if (!wordFreqDict[w]) {
+        wordFreqDict[w] = 0;
+      }
+      wordFreqDict[w] += 1;
   });
 
-  svg.append("path")
-  .data([data])
-  .attr("class", "line")
-  .attr("d", valueline)
-  //styling:
-  .attr("stroke", "#32CD32")
-  .attr("stroke-width", 2)
-  .attr("fill", "#FFFFFF");
+  var mostFreqWords = Object
+      .keys(wordFreqDict)
+      .sort(function (a, b) { return wordFreqDict[b] - wordFreqDict[a]; })
 
-  // Add the text label for the x axis
-  svg.append("text")
-  .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom) + ")")
-  .style("text-anchor", "middle")
-  .text("Year");
+  var leastFreqWords = Object
+  .keys(wordFreqDict)
+  .sort(function (a, b) { return wordFreqDict[b] - wordFreqDict[a]; }).reverse();
 
-  // Add the text label for the Y axis
-  svg.append("text")
-  .attr("transform", "rotate(-90)")
-  .attr("y", 0 - margin.left)
-  .attr("x",0 - (height / 2))
-  .attr("dy", "1em")
-  .style("text-anchor", "middle")
-  .text("Total Votes");
+  let least = {}; let most = {}; 
+  let  listLastN = []; let listTopN = [];
 
-  // Add dots
-  svg.append('g')
-  .selectAll("dot")
-  .data(data)
-  .enter()
-  .append("circle")
-  .attr("cx", function (d) { return x(d.year); } )
-  .attr("cy", function (d) { return y(d.yearTotalVotes); } )
-  .attr("r", 5)
-  .style("fill", "#800080");
-}
-
-/////////////////////////VERTICAL BARGRAPH///////////////////////////
-
-async function function3() {
-
-  var country = $('#countryVB').val();
-
-  let response = await fetch('/function3API', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({country: country})
-    });
-  let responseJSON = await response.json();
+  for (let i = 0; i < count; i++) {
+      var key = mostFreqWords[i];
+      most[mostFreqWords[i]] = wordFreqDict[mostFreqWords[i]]
+      least[leastFreqWords[i]] = wordFreqDict[leastFreqWords[i]]
   
-  if(response.status=200)
-  {
-    if(responseJSON.length === 0) {
-      alert('No Data!');
-    }
-    else {
-      d3VerticalBarGraph(responseJSON);
-    }
-  }
-  else
-  {
-    alert("Something went wrong")
-  }
+  listTopN.push({
+    word: mostFreqWords[i],
+    count: wordFreqDict[mostFreqWords[i]]
+  })
+  listLastN.push({
+    word: leastFreqWords[i],
+    count: wordFreqDict[leastFreqWords[i]]
+  })
 }
 
-function d3VerticalBarGraph(jsonData) {
+$("#mostFreq").append("<h5>Most frequent " +count+ " words in the file: </h5>");
+listTopN.forEach(a => {
+  $("#mostFreq").append(`<p style="background:LightGray;">The word <i>${a.word}</i> is repeated <b>${a.count}</b> times.</p>`)
+})
 
-  var data = jsonData;
-  var colors = d3.scaleOrdinal(d3.schemeCategory20b);
+$("#leastFreq").append("<h5>Least frequent " +count+ " words in the file:</h5>");
+listLastN.forEach(a => {
+  $("#leastFreq").append(`<p style="background:LightGray;">The word <i>${a.word}</i> is repeated <b>${a.count}</b> times.</p>`)
+})
 
-  console.log(data);
+ // $('#mostFreq').empty().append("Most frequent " +count+ " words in the file: " +JSON.stringify(listTopN[0]));
+  //$('#leastFreq').empty().append("Least frequent " +count+ " words in the file: " +JSON.stringify(listLastN[0]));
 
-  var svg = d3.select("svg"),
-            margin = 500,
-            width = svg.attr("width") - margin,
-            height = svg.attr("height") - margin
-
-  svg.append("text")
-  .attr("transform", "translate(100,0)")
-  .attr("x", 200)
-  .attr("y", 30)
-  .attr("font-size", "25px")
-  .text("VERTICAL BAR CHART")
-
-  var xScale = d3.scaleBand().range([0, width]).padding(0.4),
-      yScale = d3.scaleLinear().range([height, 0]);
-
-  var g = svg.append("g")
-            .attr("transform", "translate(" + 100 + "," + 100 + ")");
-
-  xScale.domain(data.map(function(d) { return d.Volcano_Name; })); 
-  yScale.domain(d3.extent(data.map(function(d) { return d.Number; })));
-
-  g.append("g")
-  .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(xScale))
-  .selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", ".15em").attr("y", "2").attr("transform", "rotate(-90)" )
-
-  g.append("g")
-  .append("text")
-  .attr("y", margin + 100)
-  .attr("x", (width)/2)
-  .attr("text-anchor", "end")
-  .attr("fill", "black")
-  .attr("font-size", "20px")
-  .text("Volcano Name");
-
-  g.append("g")
-    .call(d3.axisLeft(yScale)
-    .tickFormat(function(d){
-        return d;
-    }).ticks(10))
-  .append("text")
-  .attr("transform", "rotate(-90)")
-  .attr("y", 30)
-  .attr("x", -150)
-  .attr("dy", "-5.1em")
-  .attr("text-anchor", "end")
-  .attr("fill", "black")
-  .attr("font-size", "20px")
-  .text("Number");
-
-  let barVer = g.selectAll(".bar")
-              .data(data)
-              .enter().append("g");
-    
-  barVer.append("rect")
-  .attr("class", "bar")
-  .attr("x", function(d) { return xScale(d.Volcano_Name); })
-  .attr("y", function(d) { return yScale(d.Number); })
-  .attr("width", xScale.bandwidth())
-  .attr("height", function(d) { return height - yScale(d.Number); })
-  .attr("fill",function(d,i){return colors(i)});
-    
-  barVer.append("text")
-  .text(function (d) {
-    return d.Number;
-  })
-  .attr("x", function (d) {
-    return xScale(d.Volcano_Name) + xScale.bandwidth() * (0.5 + 0.1); // here 0.1 is the padding scale
-  })
-  .attr("y", function (d) {
-    return yScale(d.Number) - 5 ;
-  })
-  .attr("font-family", "sans-serif")
-  .attr("font-size", "14px")
-  .attr("fill", "black")
-  .attr("text-anchor", "middle");
 }
 
-////////////////////////HORIZONTAL BARGRAPH//////////////////////////
+function removeStopwords() {
+  var stopwords = [];
+  stopwords = JSON.parse(localStorage.getItem("StopWords"));
+  filenm = JSON.parse(localStorage.getItem("filename"));
 
-async function function4() {
-
-  var country = $('#countryHB').val();
-
-  let response = await fetch('/function4API', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({country: country})
-    });
-  let responseJSON = await response.json();
-  
-  if(response.status=200)
+  for(i=0; i<stopwords.length; i++)
   {
-      if(responseJSON.length === 0) {
-          alert('No Data!');
-      }
-      else {
-        d3HorizontalBarGraph(responseJSON);
-      }
+    var sw = stopwords[i];
+    var regex = new RegExp("\\b"+sw+"\\b","g");
+    filenm = filenm.replaceAll(regex, '');
+    filenm = filenm.replace(/\s+/g,' ').trim();
   }
-  else
-  {
-      alert("Something went wrong")
-  }
-}
-
-function d3HorizontalBarGraph(jsonData) {
-
-  var dict = {};
-  var colors = d3.scaleOrdinal(d3.schemeCategory10);
-
-  jsonData.forEach(i => {
-    dict[i.Volcano_Name] = i.Number;
-  });
-
-  console.log(dict)
-
-  let data = dict;
-
-  let margin = { top: 80, right: 80, bottom: 80, left: 252 };
-  let svgWidth = 800, svgHeight = 600;
-  let height = svgHeight - margin.top - margin.bottom, width = svgWidth - margin.left - margin.right;
-  let sourceNames = [], sourceCount = [];
-
-  //var maximumY = d3.extent(sourceCount);
-  //y.domain([-(maximumY * .02), maximumY]);
-
-  let x = d3.scaleLinear().range([0, width]),
-    y = d3.scaleBand().rangeRound([0, height]).padding(0.1);
-  for (let key in data) {
-    if (data.hasOwnProperty(key)) {
-      sourceNames.push(key);
-      sourceCount.push(parseInt(data[key]));
-    }
-  }
-  x.domain(d3.extent(sourceCount));
-  y.domain(sourceNames);
-
-  let svg = d3.select("#horizontalBarChart").append("svg");
-  svg.attr('height', svgHeight)
-  .attr('width', svgWidth);
-
-  svg.append("text")
-  .attr("transform", "translate(100,0)")
-  .attr("x", 300)
-  .attr("y", 20)
-  .attr("font-size", "20px")
-  .text("HORIZONTAL BAR CHART")
-
-  svg = svg.append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  svg.append("g")
-  .attr("transform", "translate(0, " + height + ")")
-  .call(d3.axisBottom(x))
-  .append("text")
-  .attr("y", margin.bottom - 5)
-  .attr("x", (svgWidth - margin.right - (margin.left)/3)/2)
-  .attr("text-anchor", "end")
-  .attr("fill", "black")
-  .attr("font-size", "20px")
-  .text("Year");
-
-  svg.append("g")
-  .call(d3.axisLeft(y))
-  .append("text")
-  .attr("transform", "rotate(-90)")
-  .attr("y", -40)
-  .attr("x", -150)
-  .attr("dy", "-5.1em")
-  .attr("text-anchor", "end")
-  .attr("fill", "black")
-  .attr("font-size", "20px")
-  .text("Candidate");
-
-  // Create rectangles
-  let bars = svg.selectAll('.bar')
-  .data(sourceNames)
-  .enter()
-  .append("g");
-
-  bars.append('rect')
-  .attr('class', 'bar')
-  .attr("x", function (d) { return 0; })
-  .attr("y", function (d) { return y(d); })
-  .attr("width", function (d) { return x(data[d]) })
-  .attr("height", function (d) { return y.bandwidth(); })
-  .attr("fill",function(d,i){return colors(i)});
-
-  bars.append("text")
-  .text(function (d) {
-    return data[d];
-  })
-  .attr("x", function (d) {
-    return x(data[d]) + 20;
-  })
-  .attr("y", function (d) {
-    console.log(d);
-    return y(d) + y.bandwidth() * (0.5 + 0.1); // here 0.1 is the padding scale
-  })
-  .attr("font-family", "sans-serif")
-  .attr("font-size", "14px")
-  .attr("fill", "black")
-  .attr("text-anchor", "middle");
+  //alert(afterSW);
+  localStorage.setItem("filename", JSON.stringify(filenm));
+  $('#afterSW').empty().append(filenm);
 }

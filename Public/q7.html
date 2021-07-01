@@ -32,7 +32,7 @@ ID: 1001820277 -->
             left: 0;
             background-color: rgb(0, 0, 0);
             overflow-x: hidden;
-            transition: 0.5s;
+            transition: 0.5s;   
             padding-top: 60px;
             }
 
@@ -86,23 +86,29 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                <h2>HORIZONTAL BARGRAPH</h2>
+                <h2>QUESTION 3</h2>
                 </br>
-                <div class="hBar">
-                    <label>Please provide a Country and the bar graph will display the top 5 Volcano names in ascending order and it's corresponding Number</label>
+                <div class="search">
+                    <h5>Enter your HTML text below</h5>
+                    <textarea id="htmltextQ3" rows="4" cols="50"></textarea>
                     </br>
                     </br>
-                    <label>Country: </label><input type="text" class="form-control" id="countryHB">
+                    <label>Enter the tag to the replaced</label>
+                    <input type="text" class="form-control" id="oldTag" placeholder="Old tag">
                     </br>
-                    <button class="btn btn-success executebtn" onclick="function4()">Result</button>
+                    <label>Enter the new tag</label>
+                    <input type="text" class="form-control" id="newTag" placeholder="New tag">
+                    </br>
+                    <button class="btn btn-success executebtn" onclick="searchQ3()">Search</button>
                     <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
                 </div>
                 </br>
                 </br>
-                <div class="d3js">
+                <div>
                     <h4>Result:</h4>
                     </br>
-                    <div id="horizontalBarChart"></div>
+                    <!-- <div id="newHtmlText"></div> -->
+                    <textarea id="newHtmlText" rows="4" cols="50" style="display:none;"></textarea>
                 </div>
             </div>
         </div>

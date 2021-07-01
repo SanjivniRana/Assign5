@@ -86,27 +86,46 @@ ID: 1001820277 -->
         <div class="main">
             <div class="container">
                 </br>
-                <h2>PIE CHART</h2>
+                <h2>QUESTION 5</h2>
                 </br>
-                <div class="pie">
-                    <label>Please provide the Year (eg. 2016) and State Code (eg. AL) and the result will display a pie chart which will represent the percentage of top 4 candidate votes from that state in that year.</label>
+                <div class="search">
+                    <h5>Part 1</h5>
+                    <input type="text" class="form-control" id="textName" placeholder="Name of the text">
                     </br>
+                    <input type="text" class="form-control" id="text1" placeholder="Text">
                     </br>
-                    <label>Please provide the Year:</label></br>
-                    <input type="text" class="form-control" id="q1Year">
-                    </br>
-                    <label>Please provide the State:</label></br>
-                    <input type="text" class="form-control" id="q1State">
-                    </br>
-                    <button class="btn btn-success executebtn" onclick="function1()">Result</button>
+                    <button class="btn btn-success executebtn" onclick="Q1()">Upload</button>
                     <button class="btn btn-success executebtn" onclick="location.reload()">Reset</button>
+
+                    </br>
+                    </br>
+                    </br>
+                    <h5>Part 2</h5>
+                    </br>
+<label>Enter word:</label>
+                    <input type="text" class="form-control" id="text2" placeholder="Word">
+                    </br>
+                    <button class="btn btn-success executebtn" onclick="Q1Part2()">Upload</button>
+                    </br>
+
                 </div>
                 </br>
                 </br>
-                <div class="d3js">
+                <div>
                     <h4>Result:</h4>
                     </br>
-                    <svg width="1200" height="1000"> </svg>
+                    <!-- <div style="width: 50%; float:left" id="mostFreq"></div>
+                    <div style="width: 50%; float:right" id="leastFreq"></div> -->
+                    <label id="q1Label1"></label>
+                </br>
+
+                    <label id="q1Label2"></label>
+                </br>
+            </br>
+        </br>
+    </br>
+    <label id="count1"></label>
+
                 </div>
             </div>
         </div>

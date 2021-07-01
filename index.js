@@ -15,7 +15,7 @@ application.get('/',(request,response) => {
 application.post('/function1API', async (request, response) => {
     let year = request.body.year;
     let state = request.body.state;
-    let query = "SELECT TOP 4 candidate, candidatevotes * 100.0/ totalvotes 'percentage' FROM [dbo].[presidentialelect] WHERE year = " +year+ " AND state_po = '" +state+ "' ORDER BY candidatevotes DESC FOR JSON PATH";
+    let query = "select * FROM all_month where mag <= 3  FOR JSON PATH";
     console.log("F1 query --> " +query);
     execSQLQuery(query).then(success => {
         response.send(success)
